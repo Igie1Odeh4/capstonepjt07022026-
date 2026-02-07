@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - LMS</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <aside class="sidebar">
+    <h3>LMS</h3>
+    <a href="#">Dashboard</a>
+    <a href="#">Courses</a>
+    <a href="#">Profile</a>
+  </aside>
+
+  <main class="main-content">
+
+    <div class="profile-section">
+      <div class="profile-info">
+        <img id="dashboardProfilePic" src="assets/2.webp" alt="Profile Picture">
+        <div>
+          <h2 id="profileName">John Doe</h2>
+          <p id="profileEmail">Email: john.doe@example.com</p>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button type="button" id="editProfileBtn">Edit Profile</button>
+        <button type="button">Logout</button>
+      </div>
+    </div>
+
+    <h1 class="course">My Courses</h1>
+
+    <div class="course-grid">
+      <div class="course-card" data-course="Cybersecurity Basics">
+        <h3>Cybersecurity Basics</h3>
+        <p>Progress:</p>
+        <div class="progress-bar">
+          <div class="progress" style="width: 60%;"></div>
+        </div>
+        <button type="button">Continue</button>
+      </div>
+
+      <div class="course-card" data-course="Web Development">
+        <h3>Web Development</h3>
+        <p>Progress:</p>
+        <div class="progress-bar">
+          <div class="progress" style="width: 30%;"></div>
+        </div>
+        <button type="button">Continue</button>
+      </div>
+
+      <div class="course-card" data-course="Digital Marketing">
+        <h3>Digital Marketing</h3>
+        <p>Progress:</p>
+        <div class="progress-bar">
+          <div class="progress" style="width: 80%;"></div>
+        </div>
+        <button type="button">Continue</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Edit profile button
+  document.getElementById('editProfileBtn').addEventListener('click', () => {
+    window.location.href = "edit-profile.html";
+  });
+
+  // Update profile picture if saved
+  const dashboardPic = document.getElementById('dashboardProfilePic');
+  const savedProfileImage = localStorage.getItem('profileImage');
+  if (savedProfileImage) {
+    dashboardPic.src = savedProfileImage;
+  }
+
+  // Course cards click
+  document.querySelectorAll('.course-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const courseName = card.dataset.course;
+      localStorage.setItem('currentCourse', courseName);
+      window.location.href = 'lesson.html';
+    });
+  });
+});
+</script>
+
+</body>
+</html>

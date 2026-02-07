@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+
+  <div class="center-wrapper">
+
+    <div class="auth-container">
+      <h2>Edit Profile</h2>
+
+      <form id="profileForm">
+
+        <!-- Profile Image Preview -->
+        <img id="profilePreview" src="assets/profile.jpg" alt="Profile Preview">
+
+        <!-- Upload Image -->
+        <input type="file" id="profileImage" accept="image/*">
+
+        <!-- Name & Email -->
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+
+        <button type="submit">Save Changes</button>
+
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // Load existing profile
+    document.getElementById('name').value = localStorage.getItem('userName') || "";
+    document.getElementById('email').value = localStorage.getItem('userEmail') || "";
+
+    // Save profile
+    document.getElementById('profileForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      localStorage.setItem('userName', document.getElementById('name').value);
+      localStorage.setItem('userEmail', document.getElementById('email').value);
+      alert("Profile Updated Successfully!");
+      window.location.href = "dashboard.html";
+    });
+
+    // Load saved image
+    const preview = document.getElementById('profilePreview');
+    const savedImage = localStorage.getItem('profileImage');
+    if(savedImage){
+      preview.src = savedImage;
+    }
+
+    // Image Upload Preview
+    document.getElementById('profileImage').addEventListener('change', function(){
+      const file = this.files[0];
+      if(file){
+        const reader = new FileReader();
+        reader.onload = function(e){
+          preview.src = e.target.result;
+          localStorage.setItem('profileImage', e.target.result);
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
+</body>
+</html>

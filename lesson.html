@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesson Page</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* General Styles */
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+  body { background-color:#f3f4f6; color:#111827; }
+  a { text-decoration:none; color:inherit; }
+
+  /* Dashboard Layout */
+  .dashboard { display:flex; min-height:100vh; }
+  .sidebar { width:220px; background-color:#1f2937; color:#fff; padding:20px; display:flex; flex-direction:column; }
+  .sidebar h3 { margin-bottom:20px; font-size:1.5rem; }
+  .sidebar a { color:#fff; padding:8px 12px; border-radius:6px; margin-bottom:15px; transition:0.2s; }
+  .sidebar a:hover { background-color:#374151; }
+
+  .main-content { flex:1; padding:20px; }
+
+  /* Lesson Container */
+  .lesson-container { display:flex; gap:20px; flex-wrap:wrap; }
+
+  /* Video Section */
+  .video-section { flex:2; display:flex; flex-direction:column; gap:15px; }
+  .video-section video { width:100%; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+
+  .view-doc-btn { padding:12px 20px; background-color:#10b981; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer; transition:0.3s; }
+  .view-doc-btn:hover { background-color:#059669; transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
+
+  /* Lesson Sidebar */
+  .lesson-sidebar { flex:1; background-color:#1f2937; color:#fff; border-radius:12px; padding:20px; min-width:200px; }
+  .lesson-sidebar h3 { font-size:1.3rem; margin-bottom:15px; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:8px; }
+  .lesson-sidebar ul { list-style:none; padding:0; margin:0 0 15px 0; }
+  .lesson-sidebar ul li { padding:10px 12px; border-radius:6px; margin-bottom:10px; cursor:pointer; transition:all 0.2s ease; background-color:rgba(255,255,255,0.05); }
+  .lesson-sidebar ul li:hover,
+  .lesson-sidebar ul li.active { background-color:#2563eb; color:#fff; font-weight:bold; }
+
+  .next-btn { padding:12px 20px; width:100%; border:none; border-radius:8px; background-color:#2563eb; color:#fff; font-weight:bold; cursor:pointer; transition:all 0.3s ease; }
+  .next-btn:hover { background-color:#1d4ed8; transform:translateY(-2px); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .lesson-container { flex-direction:column; }
+    .lesson-sidebar { width:100%; margin-bottom:15px; }
+  }
+</style>
+</head>
+
+<body>
+<div class="dashboard">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h3>LMS</h3>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#">Courses</a>
+    <a href="#">Profile</a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Course Title -->
+    <h1 id="courseTitle">Course Name - Lesson 1</h1>
+
+    <div class="lesson-container">
+
+      <!-- Video Section -->
+      <div class="video-section">
+        <video controls id="lessonVideo">
+          <source src="https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4" type="video/mp4">
+        </video>
+
+        <!-- View Document -->
+        <a id="lessonDoc" href="#" target="_blank">
+          <button class="view-doc-btn">View Lesson Document</button>
+        </a>
+      </div>
+
+      <!-- Lesson Sidebar -->
+      <div class="lesson-sidebar">
+        <h3>Course Lessons</h3>
+        <ul id="lessonList"></ul>
+        <button class="next-btn" id="nextLessonBtn">Next Lesson</button>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Get course from dashboard
+  let courseName = localStorage.getItem('currentCourse') || "Cybersecurity Basics";
+
+  // Lessons data (4 per course)
+  const coursesData = {
+    "Cybersecurity Basics": [
+      { title:"Introduction", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Security Concepts", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Threat Awareness", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Final Quiz", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }
+    ],
+    "Web Development": [
+      { title:"HTML Basics", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"CSS Styling", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"JavaScript Intro", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Project Build", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }
+    ],
+    "Digital Marketing": [
+      { title:"SEO Basics", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Social Media Marketing", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Email Campaigns", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+      { title:"Final Project", video:"https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4", doc:"https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }
+    ]
+  };
+
+  let currentCourseLessons = coursesData[courseName] || [];
+  const lessonList = document.getElementById('lessonList');
+
+  // Populate lessons
+  currentCourseLessons.forEach((lesson,index)=>{
+    const li = document.createElement('li');
+    li.innerText = lesson.title;
+    li.dataset.index = index;
+    lessonList.appendChild(li);
+  });
+
+  // Initialize first lesson
+  const courseTitleEl = document.getElementById('courseTitle');
+  const videoEl = document.getElementById('lessonVideo');
+  const docLinkEl = document.getElementById('lessonDoc');
+  let currentLessonIndex = 0;
+
+  function loadLesson(index){
+    const lesson = currentCourseLessons[index];
+    courseTitleEl.innerText = `${courseName} - ${lesson.title}`;
+    videoEl.src = lesson.video;
+    videoEl.load();
+    docLinkEl.href = lesson.doc;
+
+    // Highlight active lesson
+    Array.from(lessonList.children).forEach((li,i)=>{
+      li.classList.toggle('active', i===index);
+    });
+  }
+
+  loadLesson(currentLessonIndex);
+
+  // Next Lesson
+  document.getElementById('nextLessonBtn').addEventListener('click',()=>{
+    if(currentLessonIndex < currentCourseLessons.length-1){
+      currentLessonIndex++;
+      loadLesson(currentLessonIndex);
+    } else {
+      alert("You have completed all lessons!");
+    }
+  });
+
+  // Clicking on lesson in sidebar
+  lessonList.addEventListener('click', (e)=>{
+    if(e.target.tagName === 'LI'){
+      currentLessonIndex = parseInt(e.target.dataset.index);
+      loadLesson(currentLessonIndex);
+    }
+  });
+</script>
+
+</body>
+</html>
