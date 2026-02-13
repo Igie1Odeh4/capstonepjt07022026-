@@ -12,6 +12,7 @@ body {
   background: #f3f4f6;
   color: #111827;
   line-height: 1.6;
+   overflow: hidden;
 }
 
 /* ========================
@@ -195,7 +196,7 @@ body.auth-page {
   text-align: center;
   position: relative;
   overflow: hidden;
-  margin: 70px auto;
+  margin: 0 auto;
   color: #fff;
 }
 
