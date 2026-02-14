@@ -188,7 +188,7 @@ body.auth-page {
 .login-container,
 .register-container,
 .auth-container {
-  background: linear-gradient(135deg,#667eea,#764ba2);
+  background: linear-gradient(135deg,#677eee,#764ca1);
   padding: 40px 30px;
   border-radius: 15px;
   box-shadow: 0 15px 35px rgba(0,0,0,0.2);
