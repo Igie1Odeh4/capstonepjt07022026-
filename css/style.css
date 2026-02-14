@@ -321,7 +321,7 @@ body.auth-page {
 
 .sidebar {
   width: 220px;
-  background-color: linear-gradient(135deg,#667eea,#764ba2);
+  background: linear-gradient(135deg,#667eea,#764ba2);
   color: #fff;
   padding: 20px;
   display: flex;
